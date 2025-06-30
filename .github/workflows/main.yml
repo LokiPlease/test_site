@@ -1,29 +1,35 @@
 name: Deploy to VM
 
-on:
-  push:
-    branches:
-      - master
+   on:
+     push:
+       branches:
+         - master
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
+   jobs:
+     deploy:
+       runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+       steps:
+       - name: Checkout code
+         uses: actions/checkout@v3
 
-    - name: Setup SSH
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-        chmod 600 ~/.ssh/id_ed25519
-        ssh-keyscan -H ${{ secrets.VM_HOST }} >> ~/.ssh/known_hosts
+       - name: Setup SSH
+         run: |
+           echo "Creating SSH directory"
+           mkdir -p ~/.ssh
+           echo "Writing SSH private key"
+           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+           echo "Setting permissions for SSH key"
+           chmod 600 ~/.ssh/id_ed25519
+           echo "Scanning VM host: ${{ secrets.VM_HOST }}"
+           ssh-keyscan -H ${{ secrets.VM_HOST }} >> ~/.ssh/known_hosts || { echo "ssh-keyscan failed"; exit 1; }
 
-    - name: Copy files to VM
-      run: |
-        rsync -avz --delete -e "ssh -i ~/.ssh/id_ed25519" ./ ${{ secrets.VM_USER }}@${{ secrets.VM_HOST }}:${{ secrets.VM_DEST }}
+       - name: Copy files to VM
+         run: |
+           echo "Copying files to ${{ secrets.VM_USER }}@${{ secrets.VM_HOST }}:${{ secrets.VM_DEST }}"
+           rsync -avz --delete -e "ssh -i ~/.ssh/id_ed25519" ./ ${{ secrets.VM_USER }}@${{ secrets.VM_HOST }}:${{ secrets.VM_DEST }}
 
-    - name: Restart Docker Compose
-      run: |
-        ssh -i ~/.ssh/id_ed25519 ${{ secrets.VM_USER }}@${{ secrets.VM_HOST }} "cd ${{ secrets.VM_DEST }} && docker-compose down && docker-compose up --build -d"
+       - name: Restart Docker Compose
+         run: |
+           echo "Restarting Docker Compose on VM"
+           ssh -i ~/.ssh/id_ed25519 ${{ secrets.VM_USER }}@${{ secrets.VM_HOST }} "cd ${{ secrets.VM_DEST }} && docker-compose down && docker-compose up --build -d"
