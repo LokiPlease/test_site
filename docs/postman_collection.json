@@ -1,0 +1,171 @@
+{
+  "info": {
+    "name": "Test Webapp Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Register User",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\": \"testuser\", \"email\": \"test@example.com\", \"age\": 25, \"password\": \"password123\"}"
+        },
+        "url": {
+          "raw": "http://localhost:8000/users/register",
+          "host": ["localhost:8000"],
+          "path": ["users", "register"]
+        }
+      }
+    },
+    {
+      "name": "Login User",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\": \"testuser\", \"password\": \"password123\"}"
+        },
+        "url": {
+          "raw": "http://localhost:8000/users/login",
+          "host": ["localhost:8000"],
+          "path": ["users", "login"]
+        }
+      }
+    },
+    {
+      "name": "Get Profile",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8000/users/profile",
+          "host": ["localhost:8000"],
+          "path": ["users", "profile"]
+        }
+      }
+    },
+    {
+      "name": "Update Profile",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\": \"newemail@example.com\", \"age\": 30}"
+        },
+        "url": {
+          "raw": "http://localhost:8000/users/profile",
+          "host": ["localhost:8000"],
+          "path": ["users", "profile"]
+        }
+      }
+    },
+    {
+      "name": "Create Product",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\": \"Test Product\", \"description\": \"Test Description\", \"price\": 10.0}"
+        },
+        "url": {
+          "raw": "http://localhost:8000/products/",
+          "host": ["localhost:8000"],
+          "path": ["products"]
+        }
+      }
+    },
+    {
+      "name": "Get Product",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/products/1",
+          "host": ["localhost:8000"],
+          "path": ["products", "1"]
+        }
+      }
+    },
+    {
+      "name": "Create Article",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"title\": \"Test Article\", \"content\": \"This is a test article\", \"is_public\": true}"
+        },
+        "url": {
+          "raw": "http://localhost:8000/articles/",
+          "host": ["localhost:8000"],
+          "path": ["articles"]
+        }
+      }
+    },
+    {
+      "name": "Get Articles",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "disabled": true
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8000/articles/",
+          "host": ["localhost:8000"],
+          "path": ["articles"]
+        }
+      }
+    },
+    {
+      "name": "Create Comment",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"content\": \"This is a test comment\"}"
+        },
+        "url": {
+          "raw": "http://localhost:8000/comments/",
+          "host": ["localhost:8000"],
+          "path": ["comments"]
+        }
+      }
+    }
+  ]
+}
